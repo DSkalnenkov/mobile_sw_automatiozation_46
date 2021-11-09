@@ -2,10 +2,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class MainClassTest {
-    MainClass LocalNumber = new MainClass();
+    MainClass classNumber = new MainClass();
         @Test
-        public void testGetLocalNumber(){
-            Assert.assertTrue( "LocalNumber is not equal 14", LocalNumber.getLocalNumber() == 14 );
+        public void testGetClassNumber(){
+            Assert.assertTrue( "class_number is not greater than 45. It is: " + classNumber.getClassNumber(), classNumber.getClassNumber() > 45 );
         }
 
 }
