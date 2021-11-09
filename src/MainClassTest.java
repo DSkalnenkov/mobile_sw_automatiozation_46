@@ -2,10 +2,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class MainClassTest {
-    MainClass classNumber = new MainClass();
+    MainClass classString = new MainClass();
         @Test
-        public void testGetClassNumber(){
-            Assert.assertTrue( "class_number is not greater than 45. It is: " + classNumber.getClassNumber(), classNumber.getClassNumber() > 45 );
+        public void testGetClassString(){
+            Assert.assertTrue( "classString doesn't contain 'Hello' or 'hello' ",
+                    classString.getClassString().contains("Hello") |
+                    classString.getClassString().contains("hello") );
         }
-
 }
