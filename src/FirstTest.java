@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
     private AppiumDriver driver;
@@ -148,6 +149,38 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchTextAndCancel(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input.",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Conga",
+                "Cannot find search input.",
+                5
+        );
+
+        List resultSearchList = driver.findElements(By.id("org.wikipedia:id/page_list_item_container"));
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_results_container"),
+                "Search results exist",
+                5
+        );
+
+       Assert.assertTrue("Count of search result is not more than one",resultSearchList.size() > 1);
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -203,5 +236,4 @@ public class FirstTest {
         );
         return actual_text;
     }
-
 }
