@@ -181,6 +181,33 @@ public class FirstTest {
        Assert.assertTrue("Count of search result is not more than one",resultSearchList.size() > 1);
     }
 
+    @Test
+    public void testCheckSearchResultTitles() {
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input.",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Java",
+                "Cannot find search input.",
+                5
+        );
+
+        List<WebElement> resultSearchList = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"));
+
+        for (int i = 0;  i < resultSearchList.size(); i++){
+            String cur_title_article = resultSearchList.get(i).getAttribute("text").toString();
+
+            System.out.println(cur_title_article);
+            Assert.assertTrue("This string doesn't contain word 'Java': " + cur_title_article,
+                    cur_title_article.contains("Java"));
+        }
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
