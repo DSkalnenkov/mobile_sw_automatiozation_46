@@ -369,7 +369,7 @@ public class FirstTest {
         );
 
         int amount_of_search_results = getAmountOfElements(
-                By.xpath(search_result_locator)
+                By.xpath(search_result_locator), 15
         );
 
         Assert.assertTrue(
@@ -647,20 +647,65 @@ public class FirstTest {
         );
 
         waitForElementPresent(
-                By.xpath("//*[contains(@text,'" + second_article_title + "')]"),
+                 By.xpath("//*[contains(@text,'" + second_article_title + "')]"),
                 "Cannot find the second article which have been added into " + name_of_folder + "\n",
                 15
         );
 
     }
 
-        private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
+    @Test
+    public void checkTitleElementExist(){
+        String first_article_title = "Java";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' text",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                first_article_title,
+                "Cannot find search input",
+                5
+        );
+
+        String expected_article_subject = "Object-oriented programming language";
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='" + expected_article_subject + "']"),
+                "Cannot find search input",
+                5
+        );
+
+        String locator = "org.wikipedia:id/view_page_title_text";
+        boolean element_existence = ifElementExist(
+                By.id(locator),
+                "Cannot find article title",
+                15
+        );
+        Assert.assertTrue("The element '" + locator + "' doesn't exist", element_existence);
+    }
+
+    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
+    }
+
+    private  boolean ifElementExist(By by, String error_message, long timeoutInSeconds)
+    {
+        int amount_of_elements = getAmountOfElements(by, timeoutInSeconds);
+                if (amount_of_elements > 0){
+                    System.out.println("Amount of elements is " + amount_of_elements);
+                    return true;
+                }
+                else{
+                    System.out.println("Amount of elements is " + amount_of_elements);
+                    return false;
+                }
     }
 
     private WebElement waitForElementPresent(By by, String error_message)
@@ -766,15 +811,16 @@ public class FirstTest {
                 .perform();
     }
 
-    private int getAmountOfElements(By by)
+    private int getAmountOfElements(By by, long timeoutInSeconds)
     {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         List elements = driver.findElements(by);
         return elements.size();
     }
 
     private void assertElementsNotPresent(By by, String error_message)
     {
-        int amount_of_elements = getAmountOfElements(by);
+        int amount_of_elements = getAmountOfElements(by, 15);
         if (amount_of_elements > 0) {
             String default_message = "An element '" + by.toString() + "' supposed to be not present";
             throw new AssertionError(default_message + " " + error_message);
