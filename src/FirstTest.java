@@ -36,6 +36,7 @@ public class FirstTest {
 
         //driver = new AndroidDriver(new URL("http://192.168.9.228:4723/wd/hub"), capabilities);
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        driver.rotate(ScreenOrientation.PORTRAIT);
     }
 
     @After
@@ -448,6 +449,7 @@ public class FirstTest {
                 "Cannot find title of article",
                 15
         );
+
         driver.rotate(ScreenOrientation.PORTRAIT);
 
         String title_after_second_rotation = waitForElementAndGetAttribute(
